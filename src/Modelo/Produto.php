@@ -21,31 +21,41 @@ class Produto
 
         public function getId()
         {
-                return $this->id;
+            return $this->id;
         }
 
         public function getTipo()
         {
-                return $this->tipo;
+            return $this->tipo;
         }
 
         public function getNome()
         {
-                return $this->nome;
+            return $this->nome;
         }
 
         public function getDescricao()
         {
-                return $this->descricao;
+            return $this->descricao;
         }
 
         public function getImagem()
         {
-                return $this->imagem;
+            return $this->imagem;
+        }
+
+        public function getImagemDiretorio()
+        {
+            return "img/" . $this->imagem;
         }
  
         public function getPreco()
         {
-                return $this->preco;
+            return $this->preco;
+        }
+
+        public function getPrecoFormatado()
+        {
+            return "R$ " . number_format($this->preco, 2);
         }
 }
