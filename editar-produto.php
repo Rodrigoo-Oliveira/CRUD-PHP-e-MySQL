@@ -1,13 +1,29 @@
 <?php
-
     require "src/conexao-bd.php";
     require "src/Modelo/Produto.php";
     require "src/Repositorio/ProdutoRepositorio.php";
 
     $produtoRepositorio = new ProdutoRepositorio($pdo);
-    $produto = $produtoRepositorio->buscar($_GET['id']);
+
+    if (isset($_POST['editar'])){
+        $produto = new Produto($_POST['id'], $_POST['tipo'], $_POST['nome'], $_POST['descricao'], $_POST['preco']);
+
+        if ($_FILES['imagem']['error'] == UPLOAD_ERR_OK){//  alterando a estrutura aqui
+            $produto->setImagem(uniqid() . $_FILES['imagem']['name']);
+            move_uploaded_file($_FILES['imagem']['tmp_name'], $produto->getImagemDiretorio());
+        }
+
+
+        $produtoRepositorio->atualizar($produto);
+
+        
+        header("Location: admin.php");
+    }else{
+        $produto = $produtoRepositorio->buscar($_GET['id']);
+    }
 
 ?>
+
 
 <!doctype html>
 <html lang="pt-br">
@@ -35,7 +51,7 @@
     <img class= "ornaments" src="img/ornaments-coffee.png" alt="ornaments">
   </section>
   <section class="container-form">
-    <form action="#">
+    <form action="post" enctype="multipart/form-data">
 
       <label for="nome">Nome</label>
       <input type="text" id="nome" name="nome" placeholder="Digite o nome do produto" value="<?= $produto->getNome()?>" required>
@@ -55,11 +71,11 @@
       <input type="text" id="descricao" name="descricao" value="<?= $produto->getDescricao()?>" placeholder="Digite uma descrição" required>
 
       <label for="preco">Preço</label>
-      <input type="text" id="preco" name="preco" value="<?= $produto->getNome()?>" value="<?= $produto->getPrecoFormatado()?>" placeholder="Digite uma descrição" required>
+      <input type="text" id="preco" name="preco" value="<?= $produto->getNome()?>" value="<?= number_format($produto->getPreco(), 2)?>" placeholder="Digite uma descrição" required>
 
       <label for="imagem">Envie uma imagem do produto</label>
       <input type="file" name="imagem" accept="image/*" id="imagem" placeholder="Envie uma imagem">
-
+        <input type="hidden" name="editar" class="botao-cadastrar" value="<?= $produto->getId()?>">
       <input type="submit" name="editar" class="botao-cadastrar"  value="Editar produto"/>
     </form>
 
