@@ -79,6 +79,17 @@ class ProdutoRepositorio
         $statement->bindValue(5, $produto->getImagem());
         $statement->execute();
 
+    }
 
+    public function buscar(int $id)
+    {
+        $sql = "SELECT * FROM produtos WHERE id = ?";
+        $statement = $this->pdo->prepare($sql);
+        $statement->bindValue(1, $id);
+        $statement->execute();
+
+        $dados = $statement->fetch(PDO::FETCH_ASSOC); // Como está trazendo apenas um arquivo, utilizamos o metódo FETCH para associar a coluna com a chave
+
+        return $this->formarObjeto($dados);
     }
 }

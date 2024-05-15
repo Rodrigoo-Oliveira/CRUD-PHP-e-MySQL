@@ -10,7 +10,6 @@
             $_POST['nome'],
             $_POST['descricao'],
             $_POST['preco'],
-            $_POST['imagem'] 
     );
 
     $produtoRepsoitorio = new ProdutoRepositorio($pdo);
