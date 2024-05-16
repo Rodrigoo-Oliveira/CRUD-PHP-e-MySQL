@@ -1,4 +1,4 @@
 <?php
 
-$pdo = new PDO(dsn:'mysql:host=localhost;dbname=serenatto', username:'root', password: '');
+$pdo = new PDO(dsn:'mysql:host=localhost;dbname=serenatto', username:'root', password: 'R@d248613');
 
